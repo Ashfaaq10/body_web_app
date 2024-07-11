@@ -26,6 +26,11 @@ const upload = multer({ storage: storage });
 // Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Route to serve 'index.html' from the 'views' directory
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
 // Endpoint to handle image uploads
 app.post('/upload', upload.single('image'), (req, res) => {
   const imagePath = req.file.path;
