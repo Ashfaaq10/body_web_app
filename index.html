@@ -151,7 +151,7 @@
             formData.append('image', imageFile);
 
             try {
-                const response = await fetch('http://localhost:5005/upload', {
+                const response = await fetch('https://body-web-oprkz4axg-ashfaaq10s-projects.vercel.app/', {
                     method: 'POST',
                     body: formData
                 });
@@ -188,7 +188,7 @@
 
         document.getElementById('captureBtn').addEventListener('click', function() {
             let timerDiv = document.getElementById('timer');
-            let countdown = 10; // 3 seconds countdown
+            let countdown = 10; // 10 seconds countdown
             timerDiv.textContent = `Taking picture in ${countdown}...`;
             
             let interval = setInterval(() => {
@@ -218,7 +218,7 @@
                     img.style.display = 'block';
 
                     // Send base64 image data to server
-                    fetch('http://localhost:5005/upload-base64', {
+                    fetch('https://body-web-oprkz4axg-ashfaaq10s-projects.vercel.app/', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'

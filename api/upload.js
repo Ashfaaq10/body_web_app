@@ -1,33 +1,41 @@
-const express = require('express');
-const multer = require('multer');
-const { exec } = require('child_process');
-const path = require('path');
+import formidable from 'formidable';
+import fs from 'fs';
+import { exec } from 'child_process';
 
-const router = express.Router();
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'uploads/');
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + '-' + file.originalname);
+export const config = {
+  api: {
+    bodyParser: false
   }
-});
+};
 
-const upload = multer({ storage: storage });
+export default async (req, res) => {
+  if (req.method === 'OPTIONS') {
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+    res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
+    res.status(200).end();
+    return;
+  }
 
-router.post('/', upload.single('image'), (req, res) => {
-  const imagePath = req.file.path;
-
-  exec(`python predict.py ${imagePath}`, (error, stdout, stderr) => {
-    if (error) {
-      console.error(`exec error: ${error}`);
-      return res.status(500).send('Server Error');
+  const form = new formidable.IncomingForm();
+  form.parse(req, (err, fields, files) => {
+    if (err) {
+      res.status(500).send('Error parsing the file');
+      return;
     }
 
-    const measurements = JSON.parse(stdout);
-    res.json({ measurements });
-  });
-});
+    const imagePath = files.image.path;
 
-module.exports = router;
+    exec(`python predict.py ${imagePath}`, (error, stdout, stderr) => {
+      if (error) {
+        console.error(`exec error: ${error}`);
+        res.status(500).send('Server Error');
+        return;
+      }
+
+      const measurements = JSON.parse(stdout);
+      res.status(200).json({ measurements });
+    });
+  });
+};
