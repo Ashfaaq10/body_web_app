@@ -151,7 +151,7 @@
             formData.append('image', imageFile);
 
             try {
-                const response = await fetch('https://body-web-ptt4evw77-ashfaaq10s-projects.vercel.app/api/upload', {
+                const response = await fetch('https://body-web-app.vercel.app/api/upload', {
                     method: 'POST',
                     body: formData
                 });
@@ -218,7 +218,7 @@
                     img.style.display = 'block';
 
                     // Send base64 image data to server
-                    fetch('https://body-web-ptt4evw77-ashfaaq10s-projects.vercel.app/api/upload-base64', {
+                    fetch('https://body-web-app.vercel.app/api/upload-base64', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
