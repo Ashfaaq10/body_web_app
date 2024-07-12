@@ -1,3 +1,4 @@
+/*
 const express = require('express');
 const multer = require('multer');
 const bodyParser = require('body-parser');
@@ -82,3 +83,4 @@ app.post('/upload-base64', (req, res) => {
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
+*/
