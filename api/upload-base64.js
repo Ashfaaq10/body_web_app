@@ -1,8 +1,10 @@
 const { exec } = require('child_process');
 const fs = require('fs');
 const path = require('path');
+const express = require('express');
+const router = express.Router();
 
-module.exports = (req, res) => {
+router.post('/', (req, res) => {
   const base64Image = req.body.image;
   const matches = base64Image.match(/^data:image\/([A-Za-z-+/]+);base64,(.+)$/);
 
@@ -31,4 +33,6 @@ module.exports = (req, res) => {
       res.json({ measurements });
     });
   });
-};
+});
+
+module.exports = router;
